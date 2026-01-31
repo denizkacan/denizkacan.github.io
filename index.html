@@ -1,55 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Your Name</title>
+
+  <style>
+    .player { max-width: 380px; font-family: system-ui, sans-serif; }
+    #cover { width: 100%; border-radius: 12px; display: block; }
+    #playlist { list-style: none; padding: 0; margin: 12px 0 0; }
+    #playlist li { cursor: pointer; padding: 8px; border-radius: 8px; }
+    #playlist li:hover { background: #eee; }
+  </style>
 </head>
+
 <body>
   <h1>Hello 👋</h1>
   <p>This is my website.</p>
-</body>
+
   <div class="player">
-  <img id="cover" src="images/cover.jpg" alt="Cover" />
-  <h3 id="title">Track title</h3>
+    <img id="cover" src="images/cover.jpg" alt="Cover" />
+    <h3 id="title">Track title</h3>
 
-  <audio id="audio" controls></audio>
+    <audio id="audio" controls preload="metadata"></audio>
 
-  <ul id="playlist"></ul>
-</div>
+    <ul id="playlist"></ul>
+  </div>
 
-<script>
-const tracks = [
-  { title: "Track 1", src: "audio/track1.mp3" },
-  { title: "Track 2", src: "audio/track2.mp3" },
-  { title: "Track 3", src: "audio/track3.mp3" }
-];
+  <script>
+    const tracks = [
+      { title: "Track 1", src: "audio/track1.mp3" },
+      { title: "Track 2", src: "audio/track2.mp3" },
+      { title: "Track 3", src: "audio/track3.mp3" }
+    ];
 
-const audio = document.getElementById("audio");
-const title = document.getElementById("title");
-const playlist = document.getElementById("playlist");
+    const audio = document.getElementById("audio");
+    const title = document.getElementById("title");
+    const playlist = document.getElementById("playlist");
 
-let current = 0;
+    let current = 0;
 
-function loadTrack(i) {
-  current = i;
-  audio.src = tracks[i].src;
-  title.textContent = tracks[i].title;
-  audio.play();
-}
+    function loadTrack(i, autoplay=false) {
+      current = i;
+      audio.src = tracks[i].src;
+      title.textContent = tracks[i].title;
+      if (autoplay) audio.play().catch(() => {});
+    }
 
-tracks.forEach((track, i) => {
-  const li = document.createElement("li");
-  li.textContent = track.title;
-  li.onclick = () => loadTrack(i);
-  playlist.appendChild(li);
-});
+    tracks.forEach((track, i) => {
+      const li = document.createElement("li");
+      li.textContent = track.title;
+      li.addEventListener("click", () => loadTrack(i, true));
+      playlist.appendChild(li);
+    });
 
-audio.addEventListener("ended", () => {
-  current = (current + 1) % tracks.length;
-  loadTrack(current);
-});
+    audio.addEventListener("ended", () => {
+      current = (current + 1) % tracks.length;
+      loadTrack(current, true);
+    });
 
-loadTrack(0);
-</script>
-
+    // Load first track but DON'T autoplay (browsers block it)
+    loadTrack(0, false);
+  </script>
+</body>
 </html>
