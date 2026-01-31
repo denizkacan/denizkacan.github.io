@@ -3,24 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Your Name</title>
+  <title>Music</title>
 
   <style>
-    .player { max-width: 380px; font-family: system-ui, sans-serif; }
-    #cover { width: 100%; border-radius: 12px; display: block; }
-    #playlist { list-style: none; padding: 0; margin: 12px 0 0; }
-    #playlist li { cursor: pointer; padding: 8px; border-radius: 8px; }
-    #playlist li:hover { background: #eee; }
+    body {
+      font-family: system-ui, sans-serif;
+      padding: 20px;
+    }
+    .player {
+      max-width: 380px;
+    }
+    #cover {
+      width: 100%;
+      border-radius: 14px;
+      margin-bottom: 10px;
+    }
+    #playlist {
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+    }
+    #playlist li {
+      padding: 8px 10px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    #playlist li:hover {
+      background: #eee;
+    }
+    #playlist li.active {
+      font-weight: 700;
+      background: #ddd;
+    }
   </style>
 </head>
 
 <body>
-  <h1>Hello 👋</h1>
-  <p>This is my website.</p>
+  <h1>🎧 Music</h1>
 
   <div class="player">
-    <img id="cover" src="images/cover.jpg" alt="Cover" />
-    <h3 id="title">Track title</h3>
+    <img id="cover" src="images/cover.jpg" alt="Cover art" />
+    <h3 id="title">Loading…</h3>
 
     <audio id="audio" controls preload="metadata"></audio>
 
@@ -28,39 +51,82 @@
   </div>
 
   <script>
-    const tracks = [
-      { title: "Track 1", src: "audio/track1.mp3" },
-      { title: "Track 2", src: "audio/track2.mp3" },
-      { title: "Track 3", src: "audio/track3.mp3" }
-    ];
+    const OWNER = "dkacan98";
+    const REPO = "dkacan98.github.io";
+    const BRANCH = "main";
+    const AUDIO_PATH = "audio";
+    const ALLOWED = [".mp3", ".m4a", ".ogg", ".wav"];
 
     const audio = document.getElementById("audio");
-    const title = document.getElementById("title");
-    const playlist = document.getElementById("playlist");
+    const titleEl = document.getElementById("title");
+    const playlistEl = document.getElementById("playlist");
 
+    let tracks = [];
     let current = 0;
 
-    function loadTrack(i, autoplay=false) {
+    function niceTitle(filename) {
+      return filename
+        .replace(/\.[^/.]+$/, "")
+        .replace(/[_-]+/g, " ")
+        .trim();
+    }
+
+    function loadTrack(i, autoplay = false) {
       current = i;
       audio.src = tracks[i].src;
-      title.textContent = tracks[i].title;
+      titleEl.textContent = tracks[i].title;
+
+      [...playlistEl.children].forEach((li, idx) => {
+        li.classList.toggle("active", idx === i);
+      });
+
       if (autoplay) audio.play().catch(() => {});
     }
 
-    tracks.forEach((track, i) => {
-      const li = document.createElement("li");
-      li.textContent = track.title;
-      li.addEventListener("click", () => loadTrack(i, true));
-      playlist.appendChild(li);
-    });
+    function buildPlaylist() {
+      playlistEl.innerHTML = "";
+      tracks.forEach((t, i) => {
+        const li = document.createElement("li");
+        li.textContent = t.title;
+        li.addEventListener("click", () => loadTrack(i, true));
+        playlistEl.appendChild(li);
+      });
+      if (tracks.length) loadTrack(0, false);
+    }
 
     audio.addEventListener("ended", () => {
-      current = (current + 1) % tracks.length;
-      loadTrack(current, true);
+      loadTrack((current + 1) % tracks.length, true);
     });
 
-    // Load first track but DON'T autoplay (browsers block it)
-    loadTrack(0, false);
+    async function fetchTracks() {
+      const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${AUDIO_PATH}?ref=${BRANCH}`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Could not read audio folder");
+
+      const items = await res.json();
+
+      tracks = items
+        .filter(x => x.type === "file")
+        .map(x => x.name)
+        .filter(name => ALLOWED.some(ext => name.toLowerCase().endsWith(ext)))
+        .sort((a, b) => a.localeCompare(b))
+        .map(name => ({
+          title: niceTitle(name),
+          src: `${AUDIO_PATH}/${encodeURIComponent(name)}`
+        }));
+
+      if (!tracks.length) {
+        titleEl.textContent = "No audio files found";
+        return;
+      }
+
+      buildPlaylist();
+    }
+
+    fetchTracks().catch(err => {
+      console.error(err);
+      titleEl.textContent = "Failed to load playlist";
+    });
   </script>
 </body>
 </html>
