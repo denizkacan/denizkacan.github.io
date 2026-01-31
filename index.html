@@ -3,542 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Winamp-ish Player</title>
+  <title>Deniz Kaçan</title>
 
-  <style>
-    :root{
-      --bg:#0b0b0b;
-      --panel:#151515;
-      --panel2:#101010;
-      --edge1:#3a3a3a;
-      --edge2:#000;
-      --lcd:#0b2a10;
-      --lcdText:#27ff6a;
-      --lcdDim:#19b84f;
-      --btn:#1b1b1b;
-      --btnHi:#2a2a2a;
-      --btnLo:#070707;
-      --accent:#ffd000;
-    }
-
-    body{
-      margin:0;
-      padding:24px;
-      background: radial-gradient(1200px 800px at 20% 0%, #1b1b1b 0%, var(--bg) 55%, #050505 100%);
-      color:#eee;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    }
-
-    .wrap{
-  max-width: 420px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  }
-    .plist{
-  margin-top: -6px;
-  }
-
-
-
-    /* --- Winamp-ish main unit --- */
-    .unit{
-      background: linear-gradient(#1a1a1a, #0c0c0c);
-      border: 2px solid var(--edge2);
-      box-shadow:
-        0 0 0 2px #2a2a2a inset,
-        0 0 0 3px #050505 inset,
-        10px 10px 0 rgba(0,0,0,0.35);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .titlebar{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding: 6px 8px;
-      background: linear-gradient(90deg, #2b2b2b, #141414);
-      border-bottom: 1px solid #000;
-      font-size: 12px;
-      letter-spacing: 0.4px;
-    }
-    .badge{
-      color: var(--accent);
-      font-weight: 700;
-    }
-    .windowBtns{
-      display:flex; gap:6px;
-    }
-    .windowDot{
-      width:10px; height:10px;
-      border:1px solid #000;
-      box-shadow: 0 0 0 1px #3a3a3a inset;
-      background:#1f1f1f;
-    }
-
-    .main{
-      padding: 10px;
-      display:grid;
-      gap:10px;
-    }
-
-    .lcd{
-      background: linear-gradient(#0f3a18, var(--lcd));
-      border: 2px solid #000;
-      box-shadow:
-        0 0 0 1px #2d6f3f inset,
-        0 0 14px rgba(39,255,106,0.12);
-      border-radius: 4px;
-      padding: 8px;
-    }
-    .lcd .row{
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      gap:10px;
-    }
-    #trackTitle{
-      color: var(--lcdText);
-      text-shadow: 0 0 6px rgba(39,255,106,0.25);
-      font-size: 13px;
-      white-space: nowrap;
-      overflow:hidden;
-      text-overflow: ellipsis;
-      max-width: 250px;
-    }
-    #time{
-      color: var(--lcdText);
-      font-weight: 700;
-      font-size: 13px;
-      min-width: 70px;
-      text-align:right;
-    }
-
-    /* progress bar */
-    .progress{
-      margin-top: 8px;
-      height: 10px;
-      background: #071a0c;
-      border: 1px solid #000;
-      box-shadow: 0 0 0 1px #2d6f3f inset;
-      border-radius: 3px;
-      position: relative;
-      cursor: pointer;
-      overflow:hidden;
-    }
-    .progress > .fill{
-      position:absolute; inset:0 auto 0 0;
-      width: 0%;
-      background: linear-gradient(90deg, #10b647, #27ff6a);
-      filter: saturate(1.1);
-    }
-    .progress > .tick{
-      position:absolute; top:0; bottom:0;
-      width:1px;
-      background: rgba(0,0,0,0.35);
-      opacity:0.65;
-    }
-
-    /* fake spectrum */
-    .viz{
-      display:flex;
-      gap:2px;
-      height: 26px;
-      padding: 6px 8px;
-      border: 1px solid #000;
-      box-shadow: 0 0 0 1px #2a2a2a inset;
-      background: linear-gradient(#151515, #0f0f0f);
-      border-radius: 4px;
-    }
-    .bar{
-      width: 10px;
-      background: linear-gradient(#2cff66, #0c6b2b);
-      height: 20%;
-      align-self:end;
-      border: 1px solid rgba(0,0,0,0.6);
-      box-shadow: 0 0 8px rgba(39,255,106,0.08);
-    }
-
-    /* buttons */
-    .controls{
-      display:grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-    }
-    .btn{
-      user-select:none;
-      background: linear-gradient(var(--btnHi), var(--btn));
-      border: 1px solid #000;
-      box-shadow:
-        0 0 0 1px #2c2c2c inset,
-        0 2px 0 rgba(0,0,0,0.35);
-      border-radius: 4px;
-      padding: 10px 0;
-      text-align:center;
-      cursor:pointer;
-      font-size: 12px;
-      letter-spacing: 0.4px;
-    }
-    .btn:active{
-      transform: translateY(1px);
-      box-shadow:
-        0 0 0 1px #2c2c2c inset,
-        0 1px 0 rgba(0,0,0,0.25);
-      background: linear-gradient(var(--btn), var(--btnLo));
-    }
-    .btn.primary{
-      color: #000;
-      background: linear-gradient(#ffe66a, var(--accent));
-      box-shadow: 0 0 0 1px #5b4b00 inset, 0 2px 0 rgba(0,0,0,0.35);
-      font-weight: 700;
-    }
-
-    .status{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-size: 11px;
-      color:#bbb;
-      opacity:0.9;
-      padding: 2px 2px 0;
-    }
-    .pill{
-      border:1px solid #000;
-      box-shadow: 0 0 0 1px #2a2a2a inset;
-      padding: 2px 6px;
-      border-radius: 999px;
-      background: #0f0f0f;
-      color:#ddd;
-    }
-
-    /* --- playlist window --- */
-    .plist{
-      background: linear-gradient(#141414, #0c0c0c);
-      border: 2px solid #000;
-      box-shadow:
-        0 0 0 2px #2a2a2a inset,
-        0 0 0 3px #050505 inset,
-        10px 10px 0 rgba(0,0,0,0.35);
-      border-radius: 6px;
-      overflow:hidden;
-    }
-    .plist .titlebar{
-      border-bottom: 1px solid #000;
-    }
-    #playlist{
-      list-style:none;
-      margin:0;
-      padding:0;
-      max-height: 260px;
-      overflow:auto;
-      background: #0a0a0a;
-    }
-    #playlist li{
-      display:flex;
-      justify-content:space-between;
-      gap:10px;
-      padding: 8px 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      cursor:pointer;
-      color:#ddd;
-      font-size: 12px;
-    }
-    #playlist li:hover{
-      background: rgba(39,255,106,0.08);
-    }
-    #playlist li.active{
-      background: rgba(39,255,106,0.18);
-      color: #b9ffd1;
-      font-weight:700;
-    }
-    .meta{
-      color:#9a9a9a;
-      font-variant-numeric: tabular-nums;
-      min-width: 42px;
-      text-align:right;
-    }
-
-    /* responsive */
-    @media (max-width: 820px){
-      .wrap{ grid-template-columns: 1fr; }
-    }
-
-    /* hide native audio element (we still use it for playback) */
-    audio{ display:none; }
-  </style>
+  <link rel="stylesheet" href="/assets/style.css" />
+  <link rel="stylesheet" href="/assets/player.css" />
 </head>
 
 <body>
-  <div class="wrap">
-    <!-- MAIN WINAMP-ish UNIT -->
-    <div class="unit">
-      <div class="titlebar">
-        <div>music player</div>
-        <div class="windowBtns">
-          <div class="windowDot" title="minimize"></div>
-          <div class="windowDot" title="maximize"></div>
-          <div class="windowDot" title="close"></div>
-        </div>
-      </div>
-
-      <div class="main">
-        <div class="lcd">
-          <div class="row">
-            <div id="trackTitle">Loading…</div>
-            <div id="time">00:00</div>
-          </div>
-          <div class="progress" id="progress" title="seek">
-            <div class="fill" id="progressFill"></div>
-            <!-- ticks -->
-            <div class="tick" style="left:10%"></div>
-            <div class="tick" style="left:20%"></div>
-            <div class="tick" style="left:30%"></div>
-            <div class="tick" style="left:40%"></div>
-            <div class="tick" style="left:50%"></div>
-            <div class="tick" style="left:60%"></div>
-            <div class="tick" style="left:70%"></div>
-            <div class="tick" style="left:80%"></div>
-            <div class="tick" style="left:90%"></div>
-          </div>
-        </div>
-
-        <div class="viz" id="viz" aria-hidden="true">
-          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-          <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-        </div>
-
-        <div class="controls">
-          <div class="btn" id="btnPrev">⏮</div>
-          <div class="btn primary" id="btnPlay">▶</div>
-          <div class="btn" id="btnPause">⏸</div>
-          <div class="btn" id="btnStop">■</div>
-          <div class="btn" id="btnNext">⏭</div>
-        </div>
-
-        <div class="status">
-          <div class="pill" id="mode">SHUF: OFF</div>
-          <div class="pill" id="count">0 tracks</div>
-        </div>
-
-        <!-- hidden audio element used for playback -->
-        <audio id="audio" preload="metadata"></audio>
-      </div>
+  <header class="navbar">
+    <div class="navinner">
+      <div class="brand">Deniz Kaçan <span>• Planet formation & protostellar ices</span></div>
+      <nav class="navlinks">
+        <a href="/">Home</a>
+        <a href="/research/">Research</a>
+        <a href="/outreach/">Outreach</a>
+        <a href="/notes/">Notes</a>
+        <a href="/photos/">Photos</a>
+      </nav>
     </div>
+  </header>
 
-    <!-- PLAYLIST WINDOW -->
-    <div class="plist">
-      <div class="titlebar">
-        <div><span class="badge">WINAMP</span> 2.9* • playlist</div>
-        <div class="windowBtns">
-          <div class="windowDot"></div>
-          <div class="windowDot"></div>
-          <div class="windowDot"></div>
-        </div>
+  <main class="container">
+    <section class="header">
+      <p class="kicker">Purdue University • PhD Student</p>
+      <h1>Home</h1>
+      <p class="subtitle">
+        I study ice chemistry and radiative transfer in deeply embedded (Class 0/I) protostellar disks,
+        using JWST spectroscopy and RT modeling to disentangle disk vs envelope contributions.
+      </p>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>Research snapshot</h2>
+        <p>
+          Focus: spatially resolved ice absorption features (H<sub>2</sub>O, CO<sub>2</sub>, CO, CH<sub>3</sub>OH…)
+          in edge-on systems; model grids to quantify scattering and geometry effects.
+        </p>
+
+        <ul class="list">
+          <li>
+            <div><strong>Current project:</strong> Disk vs envelope ice contributions in embedded disks</div>
+            <div class="meta">Model grids • RT • JWST comparisons</div>
+          </li>
+          <li>
+            <div><strong>Target:</strong> IRAS 04302 (“Butterfly Star”)</div>
+            <div class="meta">NIRSpec + MIRI spatially resolved spectra</div>
+          </li>
+        </ul>
       </div>
 
-      <ul id="playlist"></ul>
-    </div>
-  </div>
+      <div class="card">
+        <h2>Contact</h2>
+        <p class="meta">
+          Add: email • CV link • Google Scholar • ORCID • GitHub
+        </p>
 
+        <ul class="list">
+          <li><strong>Office:</strong> (add)</li>
+          <li><strong>Email:</strong> (add)</li>
+          <li><strong>Links:</strong> (add)</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="footer">
+      © <span id="year"></span> Deniz Kaçan • Built with GitHub Pages
+    </footer>
+  </main>
+
+  <script src="/assets/site.js"></script>
+  <script src="/assets/player.js"></script>
   <script>
-    // ---- Repo config (yours) ----
-    const OWNER = "dkacan98";
-    const REPO = "dkacan98.github.io";
-    const BRANCH = "main";
-    const AUDIO_PATH = "audio";
-    const ALLOWED = [".mp3", ".m4a", ".ogg", ".wav"];
-
-    // ---- Elements ----
-    const audio = document.getElementById("audio");
-    const trackTitle = document.getElementById("trackTitle");
-    const timeEl = document.getElementById("time");
-    const playlistEl = document.getElementById("playlist");
-    const progress = document.getElementById("progress");
-    const progressFill = document.getElementById("progressFill");
-
-    const btnPrev = document.getElementById("btnPrev");
-    const btnPlay = document.getElementById("btnPlay");
-    const btnPause = document.getElementById("btnPause");
-    const btnStop = document.getElementById("btnStop");
-    const btnNext = document.getElementById("btnNext");
-
-    const modeEl = document.getElementById("mode");
-    const countEl = document.getElementById("count");
-
-    const viz = document.getElementById("viz");
-    const bars = Array.from(viz.querySelectorAll(".bar"));
-
-    // ---- State ----
-    let tracks = [];
-    let current = 0;
-    let shuffle = false;
-    let vizTimer = null;
-
-    function niceTitle(filename) {
-      return filename
-        .replace(/\.[^/.]+$/, "")
-        .replace(/[_-]+/g, " ")
-        .trim();
-    }
-
-    function formatTime(sec){
-      if (!isFinite(sec)) return "00:00";
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return String(m).padStart(2,"0") + ":" + String(s).padStart(2,"0");
-    }
-
-    function setActiveRow(i){
-      [...playlistEl.children].forEach((li, idx) => li.classList.toggle("active", idx === i));
-    }
-
-    function loadTrack(i, autoplay=false){
-      if (!tracks.length) return;
-      current = (i + tracks.length) % tracks.length;
-      audio.src = tracks[current].src;
-      trackTitle.textContent = tracks[current].title;
-      setActiveRow(current);
-      if (autoplay) audio.play().catch(()=>{});
-    }
-
-    function nextIndex(){
-      if (!tracks.length) return 0;
-      if (shuffle && tracks.length > 1){
-        let j = current;
-        while (j === current) j = Math.floor(Math.random() * tracks.length);
-        return j;
-      }
-      return (current + 1) % tracks.length;
-    }
-
-    function prevIndex(){
-      if (!tracks.length) return 0;
-      if (shuffle && tracks.length > 1){
-        let j = current;
-        while (j === current) j = Math.floor(Math.random() * tracks.length);
-        return j;
-      }
-      return (current - 1 + tracks.length) % tracks.length;
-    }
-
-    function play(){
-      if (!audio.src && tracks.length) loadTrack(0, false);
-      audio.play().catch(()=>{});
-    }
-
-    function pause(){ audio.pause(); }
-
-    function stop(){
-      audio.pause();
-      audio.currentTime = 0;
-      progressFill.style.width = "0%";
-      timeEl.textContent = "00:00";
-    }
-
-    function startViz(){
-      if (vizTimer) return;
-      vizTimer = setInterval(() => {
-        // fake bar motion
-        bars.forEach(b => {
-          const h = 15 + Math.random() * 85;
-          b.style.height = h + "%";
-        });
-      }, 120);
-    }
-
-    function stopViz(){
-      if (!vizTimer) return;
-      clearInterval(vizTimer);
-      vizTimer = null;
-      bars.forEach(b => b.style.height = "20%");
-    }
-
-    function buildPlaylist(){
-      playlistEl.innerHTML = "";
-      tracks.forEach((t, i) => {
-        const li = document.createElement("li");
-        const left = document.createElement("span");
-        left.textContent = t.title;
-
-        const right = document.createElement("span");
-        right.className = "meta";
-        right.textContent = String(i+1).padStart(2,"0");
-
-        li.appendChild(left);
-        li.appendChild(right);
-        li.addEventListener("click", () => loadTrack(i, true));
-        playlistEl.appendChild(li);
-      });
-
-      countEl.textContent = `${tracks.length} tracks`;
-      if (tracks.length) loadTrack(0, false);
-    }
-
-    // ---- Events ----
-    btnPlay.addEventListener("click", play);
-    btnPause.addEventListener("click", pause);
-    btnStop.addEventListener("click", stop);
-    btnNext.addEventListener("click", () => loadTrack(nextIndex(), true));
-    btnPrev.addEventListener("click", () => loadTrack(prevIndex(), true));
-
-    modeEl.addEventListener("click", () => {
-      shuffle = !shuffle;
-      modeEl.textContent = `SHUF: ${shuffle ? "ON" : "OFF"}`;
-    });
-
-    audio.addEventListener("timeupdate", () => {
-      timeEl.textContent = formatTime(audio.currentTime);
-      if (audio.duration){
-        progressFill.style.width = (audio.currentTime / audio.duration) * 100 + "%";
-      }
-    });
-
-    audio.addEventListener("play", startViz);
-    audio.addEventListener("pause", stopViz);
-    audio.addEventListener("ended", () => loadTrack(nextIndex(), true));
-
-    progress.addEventListener("click", (e) => {
-      if (!audio.duration) return;
-      const rect = progress.getBoundingClientRect();
-      const pct = (e.clientX - rect.left) / rect.width;
-      audio.currentTime = Math.max(0, Math.min(audio.duration, pct * audio.duration));
-    });
-
-    // ---- Fetch audio folder listing from GitHub API ----
-    async function fetchTracks(){
-      const url = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${AUDIO_PATH}?ref=${BRANCH}`;
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
-      const items = await res.json();
-
-      const files = items
-        .filter(x => x.type === "file")
-        .map(x => x.name)
-        .filter(name => ALLOWED.some(ext => name.toLowerCase().endsWith(ext)))
-        .sort((a,b) => a.localeCompare(b));
-
-      tracks = files.map(name => ({
-        title: niceTitle(name),
-        src: `${AUDIO_PATH}/${encodeURIComponent(name)}`
-      }));
-
-      if (!tracks.length){
-        trackTitle.textContent = "No audio files found in /audio";
-        countEl.textContent = "0 tracks";
-        return;
-      }
-
-      buildPlaylist();
-    }
-
-    fetchTracks().catch(err => {
-      console.error(err);
-      trackTitle.textContent = "Failed to load playlist";
-    });
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
