@@ -70,7 +70,8 @@
     fab.style.display = open ? "none" : "flex";
     localStorage.setItem(OPEN_KEY, open ? "1" : "0");
   }
-  setOpen(true);
+  setOpen(localStorage.getItem(OPEN_KEY) === "1");
+
 
 
   fab.addEventListener("click", () => setOpen(true));
