@@ -6,35 +6,67 @@
   <title>Music</title>
 
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      padding: 20px;
-    }
-    .player {
-      max-width: 380px;
-    }
-    #cover {
-      width: 100%;
-      border-radius: 14px;
-      margin-bottom: 10px;
-    }
-    #playlist {
-      list-style: none;
-      padding: 0;
-      margin-top: 10px;
-    }
-    #playlist li {
-      padding: 8px 10px;
-      cursor: pointer;
-      border-radius: 8px;
-    }
-    #playlist li:hover {
-      background: #eee;
-    }
-    #playlist li.active {
-      font-weight: 700;
-      background: #ddd;
-    }
+    body{
+  font-family: "MS Sans Serif", "Tahoma", system-ui, sans-serif;
+  background: #008080; /* classic teal desktop */
+  padding: 24px;
+}
+
+.player{
+  max-width: 420px;
+  background: #c0c0c0;
+  border: 2px solid #000;
+  box-shadow:
+    2px 2px 0 #fff inset,
+    -2px -2px 0 #808080 inset,
+    6px 6px 0 rgba(0,0,0,0.25);
+  padding: 12px;
+}
+
+#title{
+  margin: 0 0 10px;
+  padding: 6px 8px;
+  background: #000080;   /* navy title bar */
+  color: #fff;
+  border: 2px solid #000;
+  box-shadow:
+    1px 1px 0 #fff inset,
+    -1px -1px 0 #404040 inset;
+  font-size: 14px;
+}
+
+#audio{
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+#playlist{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 2px solid #000;
+  background: #fff;
+  max-height: 220px;
+  overflow: auto;
+}
+
+#playlist li{
+  padding: 6px 8px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+#playlist li:hover{
+  background: #000080;
+  color: #fff;
+}
+
+#playlist li.active{
+  background: #000;
+  color: #00ff00; /* neon green */
+}
+
   </style>
 </head>
 
@@ -42,13 +74,11 @@
   <h1>🎧 Music</h1>
 
   <div class="player">
-    <img id="cover" src="images/cover.jpg" alt="Cover art" />
-    <h3 id="title">Loading…</h3>
-
-    <audio id="audio" controls preload="metadata"></audio>
-
-    <ul id="playlist"></ul>
+  <h3 id="title">Loading…</h3>
+  <audio id="audio" controls preload="metadata"></audio>
+  <ul id="playlist"></ul>
   </div>
+
 
   <script>
     const OWNER = "dkacan98";
