@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Deniz Kaçan | CV</title>
+
   <style>
     :root {
       --bg: #f7f9fc;
@@ -14,7 +15,9 @@
       --line: #e5e7eb;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
@@ -30,7 +33,7 @@
       background: var(--card);
       padding: 36px;
       border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
     }
 
     header {
@@ -58,6 +61,14 @@
     .contact a {
       color: var(--accent);
       text-decoration: none;
+    }
+
+    .tagline {
+      margin-top: 14px;
+      background: #eff6ff;
+      border-left: 4px solid var(--accent);
+      padding: 12px 14px;
+      border-radius: 8px;
     }
 
     h2 {
@@ -100,36 +111,76 @@
       gap: 24px;
     }
 
-    .tagline {
-      margin-top: 14px;
-      background: #eff6ff;
-      border-left: 4px solid var(--accent);
-      padding: 12px 14px;
-      border-radius: 8px;
+    .btn {
+      display: inline-block;
+      margin-top: 16px;
+      padding: 10px 16px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
     }
 
     @media (max-width: 700px) {
-      .container { padding: 22px; margin: 16px; }
-      .two-col { grid-template-columns: 1fr; }
-      h1 { font-size: 1.8rem; }
+      .container {
+        padding: 22px;
+        margin: 16px;
+      }
+
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .container {
+        box-shadow: none;
+        margin: 0;
+        max-width: 100%;
+        border-radius: 0;
+      }
+
+      .btn {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" id="cv-content">
     <header>
       <h1>Deniz Kaçan</h1>
       <div class="subtitle">PhD Student in Physics and Astronomy | Star and Planet Formation | Astrochemistry</div>
+
       <div class="contact">
         West Lafayette, Indiana ·
         <a href="mailto:dkacan@purdue.edu">dkacan@purdue.edu</a> ·
-        +1 765 624 29 78 ·
+        +1 765 624 2978 ·
         <a href="https://github.com/yourusername" target="_blank">GitHub</a> ·
         <a href="https://www.linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
       </div>
+
       <div class="tagline">
         Research interests: Star and Planet Formation, Astrochemistry, Radiative Transfer Modeling, and Protoplanetary Disks.
       </div>
+
+      <button class="btn" onclick="downloadPDF()">Download this page as PDF</button>
     </header>
 
     <section>
@@ -138,7 +189,7 @@
       <div class="item">
         <div class="item-header">
           <div>
-            <strong>Purdue University</strong><br>
+            <strong>Purdue University</strong><br />
             PhD in Physics and Astronomy
           </div>
           <div class="meta">Aug 2022 – May 2028</div>
@@ -152,25 +203,25 @@
       <div class="item">
         <div class="item-header">
           <div>
-            <strong>Purdue University</strong><br>
+            <strong>Purdue University</strong><br />
             Non-thesis Master’s in Physics and Astronomy
           </div>
           <div class="meta">Aug 2022 – Dec 2024</div>
         </div>
         <ul>
           <li>Advisor: Prof. Danny Milisavljevic (official), Prof. Merel van ’t Hoff (unofficial)</li>
-          <li>Coursework: 4 core physics, 2 math, 3 elective astronomy, and oral English proficiency courses</li>
-          <li>Teaching Assistant: Electricity, Light and Modern Physics Lab, Modern Mechanics Lab, Mathematical Methods in Physics, Intermediate Astronomy I, Intermediate Astronomy II</li>
+          <li>Coursework: core physics, mathematics, elective astronomy, and oral English proficiency courses</li>
+          <li>Teaching Assistant: Electricity, Light and Modern Physics Lab; Modern Mechanics Lab; Mathematical Methods in Physics; Intermediate Astronomy I; Intermediate Astronomy II</li>
         </ul>
       </div>
 
       <div class="item">
         <div class="item-header">
           <div>
-            <strong>Istanbul Technical University</strong><br>
+            <strong>Istanbul Technical University</strong><br />
             Bachelor’s in Civil Engineering and Physics Engineering (Double Major)
           </div>
-          <div class="meta">Sep 2017 – June 2022</div>
+          <div class="meta">Sep 2017 – Jun 2022</div>
         </div>
         <ul>
           <li>GPA: 3.92/4.00</li>
@@ -184,7 +235,7 @@
       <div class="item">
         <div class="item-header">
           <div>
-            <strong>Visiting Researcher</strong><br>
+            <strong>Visiting Researcher</strong><br />
             Flatiron Institute, New York City, NY
           </div>
           <div class="meta">Nov 2024 – Present</div>
@@ -197,8 +248,8 @@
       <div class="item">
         <div class="item-header">
           <div>
-            <strong>Graduate Research Assistant</strong><br>
-            Dr. van’t Hoff’s Group, West Lafayette, IN
+            <strong>Graduate Research Assistant</strong><br />
+            Dr. van ’t Hoff’s Group, West Lafayette, IN
           </div>
           <div class="meta">Sep 2023 – Present</div>
         </div>
@@ -211,7 +262,7 @@
       <div class="item">
         <div class="item-header">
           <div>
-            <strong>Selected Participant</strong><br>
+            <strong>Selected Participant</strong><br />
             La Silla Observatory, Santiago, Chile
           </div>
           <div class="meta">Feb 2025</div>
@@ -224,10 +275,10 @@
       <div class="item">
         <div class="item-header">
           <div>
-            <strong>Undergraduate Researcher</strong><br>
+            <strong>Undergraduate Researcher</strong><br />
             Undergraduate Thesis, Istanbul, Turkey
           </div>
-          <div class="meta">Sep 2020 – June 2022</div>
+          <div class="meta">Sep 2020 – Jun 2022</div>
         </div>
         <ul>
           <li>Timing analysis of young neutron stars (Physics)</li>
@@ -250,13 +301,13 @@
         <h2>Skills</h2>
         <ul>
           <li><strong>Languages:</strong> Python, Bash, MATLAB, C++, LaTeX</li>
-          <li><strong>Software:</strong> RADMC-3D, APT, ETC, Aladin, IRAF, ds9, CARTA, Conda, Git</li>
+          <li><strong>Software:</strong> RADMC-3D, APT, ETC, Aladin, IRAF, DS9, CARTA, Conda, Git</li>
         </ul>
       </div>
     </section>
 
     <section>
-      <h2>Honors & Awards</h2>
+      <h2>Honors &amp; Awards</h2>
       <ul>
         <li>ESO Travel Award (2025)</li>
         <li>Purdue College of Science Travel Award (2024)</li>
@@ -267,5 +318,23 @@
       </ul>
     </section>
   </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script>
+    function downloadPDF() {
+      const element = document.getElementById('cv-content');
+
+      const opt = {
+        margin: 0.4,
+        filename: 'Deniz_Kacan_CV.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+
+      html2pdf().set(opt).from(element).save();
+    }
+  </script>
 </body>
 </html>
