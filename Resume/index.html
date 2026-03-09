@@ -1,1 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Deniz Kaçan | CV</title>
+  <style>
+    :root {
+      --bg: #f7f9fc;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #1d4ed8;
+      --line: #e5e7eb;
+    }
 
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    .container {
+      max-width: 950px;
+      margin: 40px auto;
+      background: var(--card);
+      padding: 36px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    header {
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 18px;
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      margin: 0 0 6px 0;
+      font-size: 2.2rem;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .contact {
+      margin-top: 10px;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .contact a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    h2 {
+      color: var(--accent);
+      margin-top: 30px;
+      margin-bottom: 10px;
+      font-size: 1.2rem;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 6px;
+    }
+
+    .item {
+      margin-bottom: 18px;
+    }
+
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .item-header strong {
+      font-size: 1rem;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    ul {
+      margin: 8px 0 0 18px;
+      padding: 0;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .tagline {
+      margin-top: 14px;
+      background: #eff6ff;
+      border-left: 4px solid var(--accent);
+      padding: 12px 14px;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 700px) {
+      .container { padding: 22px; margin: 16px; }
+      .two-col { grid-template-columns: 1fr; }
+      h1 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Deniz Kaçan</h1>
+      <div class="subtitle">PhD Student in Physics and Astronomy | Star and Planet Formation | Astrochemistry</div>
+      <div class="contact">
+        West Lafayette, Indiana ·
+        <a href="mailto:dkacan@purdue.edu">dkacan@purdue.edu</a> ·
+        +1 765 624 29 78 ·
+        <a href="https://github.com/yourusername" target="_blank">GitHub</a> ·
+        <a href="https://www.linkedin.com/in/yourprofile" target="_blank">LinkedIn</a>
+      </div>
+      <div class="tagline">
+        Research interests: Star and Planet Formation, Astrochemistry, Radiative Transfer Modeling, and Protoplanetary Disks.
+      </div>
+    </header>
+
+    <section>
+      <h2>Education</h2>
+
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <strong>Purdue University</strong><br>
+            PhD in Physics and Astronomy
+          </div>
+          <div class="meta">Aug 2022 – May 2028</div>
+        </div>
+        <ul>
+          <li>Research topic: Unveiling ice distribution in young planet-forming environments</li>
+          <li>Advisor: Prof. Merel van ’t Hoff</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <strong>Purdue University</strong><br>
+            Non-thesis Master’s in Physics and Astronomy
+          </div>
+          <div class="meta">Aug 2022 – Dec 2024</div>
+        </div>
+        <ul>
+          <li>Advisor: Prof. Danny Milisavljevic (official), Prof. Merel van ’t Hoff (unofficial)</li>
+          <li>Coursework: 4 core physics, 2 math, 3 elective astronomy, and oral English proficiency courses</li>
+          <li>Teaching Assistant: Electricity, Light and Modern Physics Lab, Modern Mechanics Lab, Mathematical Methods in Physics, Intermediate Astronomy I, Intermediate Astronomy II</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <strong>Istanbul Technical University</strong><br>
+            Bachelor’s in Civil Engineering and Physics Engineering (Double Major)
+          </div>
+          <div class="meta">Sep 2017 – June 2022</div>
+        </div>
+        <ul>
+          <li>GPA: 3.92/4.00</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Experience</h2>
+
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <strong>Visiting Researcher</strong><br>
+            Flatiron Institute, New York City, NY
+          </div>
+          <div class="meta">Nov 2024 – Present</div>
+        </div>
+        <ul>
+          <li>Iterative self-consistent disk modeling to reveal self-shadowing in an active disk with viscous heating</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <strong>Graduate Research Assistant</strong><br>
+            Dr. van’t Hoff’s Group, West Lafayette, IN
+          </div>
+          <div class="meta">Sep 2023 – Present</div>
+        </div>
+        <ul>
+          <li>Radiative transfer modeling of protostellar structures to examine ice features in Class 0/I sources</li>
+          <li>JWST NIRSpec/MIRI observations of early star and planet formation</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <strong>Selected Participant</strong><br>
+            La Silla Observatory, Santiago, Chile
+          </div>
+          <div class="meta">Feb 2025</div>
+        </div>
+        <ul>
+          <li>One of twenty students selected to attend ESO’s observing school</li>
+        </ul>
+      </div>
+
+      <div class="item">
+        <div class="item-header">
+          <div>
+            <strong>Undergraduate Researcher</strong><br>
+            Undergraduate Thesis, Istanbul, Turkey
+          </div>
+          <div class="meta">Sep 2020 – June 2022</div>
+        </div>
+        <ul>
+          <li>Timing analysis of young neutron stars (Physics)</li>
+          <li>Design and experimental analysis of composite structural elements under high-temperature-change effects (Civil Engineering)</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="two-col">
+      <div>
+        <h2>Outreach</h2>
+        <ul>
+          <li>Observation Assistant at National Astronomy Festival</li>
+          <li>Event Organizer and Presenter at ITU Astronomy Club</li>
+          <li>Assistant for Physics Inside Out Program at Purdue for middle school students</li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Skills</h2>
+        <ul>
+          <li><strong>Languages:</strong> Python, Bash, MATLAB, C++, LaTeX</li>
+          <li><strong>Software:</strong> RADMC-3D, APT, ETC, Aladin, IRAF, ds9, CARTA, Conda, Git</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Honors & Awards</h2>
+      <ul>
+        <li>ESO Travel Award (2025)</li>
+        <li>Purdue College of Science Travel Award (2024)</li>
+        <li>2-time 2nd Ranked Graduate in both departments (2021, 2022)</li>
+        <li>ITU Foundation Scholarship (2021)</li>
+        <li>Modern Education Foundation Scholarship (2020)</li>
+        <li>ERASMUS Exchange Program Scholarship (2019)</li>
+      </ul>
+    </section>
+  </div>
+</body>
+</html>
